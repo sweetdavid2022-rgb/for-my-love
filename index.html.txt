@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>A Special Message for You</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden;
+            text-align: center;
+            margin: 0;
+            touch-action: manipulation;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(106, 27, 154, 0.2);
+            border: 2px solid #ce93d8;
+            width: 85%;
+            max-width: 400px;
+        }
+        h1 { color: #6a1b9a; font-size: 1.8rem; margin-bottom: 20px; }
+        .buttons { 
+            margin-top: 30px; 
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            height: 150px; /* Space for button to move */
+        }
+        button {
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+        }
+        #yesBtn { background-color: #9c27b0; color: white; z-index: 1;}
+        #noBtn { 
+            background-color: #b0bec5; 
+            color: white; 
+            position: absolute; 
+            transition: all 0.3s ease; /* Smooth movement */
+            z-index: 10;
+        }
+        .success-msg { display: none; animation: fadeIn 1.2s ease-in-out; }
+        .photo-frame {
+            width: 100%;
+            max-width: 280px;
+            border: 8px solid white;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            margin: 20px auto;
+            display: block;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainContainer">
+        <h1 id="mainTitle">Will you marry me Nina? 💍</h1>
+        <div class="buttons">
+            <button id="yesBtn">YES!</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+
+    <div id="success" class="success-msg">
+        <h1 style="color: #6a1b9a;">I love you to the moon and back ❤️</h1>
+        <img src="us.jpg" alt="Our Picture" class="photo-frame">
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+
+        function moveButton() {
+            // Screen boundaries
+            const padding = 50;
+            const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+            const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+            
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+            
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
+        }
+
+        // Works for both mouse and phone touch
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Stops the actual "click" on mobile
+            moveButton();
+        });
+
+        yesBtn.addEventListener('click', () => {
+            document.getElementById('mainContainer').style.display = 'none';
+            document.getElementById('success').style.display = 'block';
+            
+            // Confetti Cannon
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#9c27b0', '#e1bee7', '#ffffff']
+            });
+        });
+    </script>
+</body>
+</html>
